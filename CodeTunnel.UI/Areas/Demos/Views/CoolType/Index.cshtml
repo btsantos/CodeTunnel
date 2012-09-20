@@ -1,0 +1,85 @@
+﻿@model CodeTunnel.UI.Areas.Demos.ViewModels.CoolTypeViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Demo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/soundmanager2-nodebug-jsmin.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jQuery.coolType.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.scrollTo-1.4.2-min.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        var rootPath = '@Url.Content("~/")';
+        soundManager.url = rootPath + 'SiteContent/sound/';
+
+        $(function ()
+        {
+            $.coolType.setup(
+            {
+                playSound: true,
+                soundFile: rootPath + 'SiteContent/sound/digitalbeep2.mp3',
+            });
+            $('input:button').click(function ()
+            {
+               TypeIt($('#text').val());
+            });
+            @if (!string.IsNullOrEmpty(Model.Text))
+            {
+                <text>
+                    TypeIt('@Model.Text');
+                    $('#text').val('@Model.Text');
+                </text>
+            }
+        });
+
+        function TypeIt (text)
+        {
+            $('#debug').html('> Typing has begun.<br />');
+            $('#terminal').coolType(
+                text,
+                function ()
+                {
+                    $('#debug').append('> Typing has finished.<br />');
+                },
+                {
+                    speed: $('#speed').val(),
+                    caretChar: $('#caretChar').val(),
+                    insertBefore: $('#insertBefore').val(),
+                    insertAfter: $('#insertAfter').val(),
+                    delayBefore: $('#delayBefore').val(),
+                    delayAfter: $('#delayAfter').val(),
+                    style: $('#style').val(),
+                    inline: $('#inline').is(':checked'),
+                    scrollToBottom: $('#scrollToBottom').is(':checked'),
+                    caretBlinkSpeed: $('#caretBlinkSpeed').val()
+                }
+            );
+        }
+    </script>
+</head>
+<body>
+    <div id="terminal" style="height: 250px; padding: 10px; border: dotted 1px #00ff00; background: #000000; color: #ffffff;  overflow: auto;">
+    </div>
+    <br />
+    Speed: <input id="speed" type="text" value="25" /><br />
+    Caret Character: <input id="caretChar" type="text" value="█" /><br />
+    Insert Before: <input id="insertBefore" type="text" value="&gt; " /><br />
+    Insert After: <input id="insertAfter" type="text" value="" /><br />
+    Delay Before: <input id="delayBefore" type="text" value="1" /><br />
+    Delay After: <input id="delayAfter" type="text" value="1" /><br />
+    Style: <input id="style" type="text" value="color: lime; font-family: arial;" /><br />
+    Inline: <input id="inline" type="checkbox" /><br />
+    Caret Blink Speed: <input id="caretBlinkSpeed" type="text" value="50" /><br />
+    Scroll To Bottom: <input id="scrollToBottom" type="checkbox" /><br />
+    Text: <input id="text" type="text" style="width: 300px;" value="This is a test. It is only a test. DON'T PANIC!" /><br />
+    <input type="button" value="Type it!" />
+    <br />
+    <br />
+    <div id="debug" style="border: solid 1px #000000; padding: 10px; width: 500px; min-height: 100px;">
+    </div>
+</body>
+</html>

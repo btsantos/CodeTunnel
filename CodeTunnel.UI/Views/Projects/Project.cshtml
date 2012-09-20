@@ -1,0 +1,18 @@
+﻿@model CodeTunnel.UI.Models.Repository
+
+<div style="margin-bottom: 10px; position: relative; padding: 10px;">
+    <div class="opacityFrame"></div>
+    <div class="subFrame">
+        <a class="titleLink" href="@Model.HtmlUrl">@Model.Name</a>
+        <br />
+        <div style="font-size: 13px;font-style:italic;">
+            Created: @Model.Created.ToString("D")<br />
+            Last Updated: @Model.LastUpdated.ToString("D")<br />
+            Language: @(string.IsNullOrWhiteSpace(Model.Language) ? "Not Specified" : Model.Language)<br />
+            Forks: @Model.Forks<br />
+            People Watching: @Model.Watchers
+        </div>
+        <br />
+        @(string.IsNullOrWhiteSpace(Model.Description) ? "No Description." : Model.Description)
+    </div>
+</div>

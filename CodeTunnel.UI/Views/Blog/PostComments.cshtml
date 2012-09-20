@@ -1,0 +1,36 @@
+﻿@model IEnumerable<CodeTunnel.Domain.Entities.PostComment>
+@using CodeTunnel.Domain.Entities;
+<div class="comments">
+    <div class="commentCount">
+        <span id="commentCount">@Model.Count()</span> Comment(s)
+    </div>
+    @foreach (PostComment postComment in Model)
+    {
+        <div class="comment" style="position: relative;">
+            <div class="opacityFrame">
+            </div>
+            <div class="subFrame">
+                @{
+        MvcHtmlString authorMarkup = MvcHtmlString.Create(string.IsNullOrEmpty(postComment.Website) ? postComment.Author : string.Format("<a href='{0}'>{1}</a>", postComment.Website, postComment.Author));
+                }
+                <div style="font-size: 15px; font-weight: bold;">@authorMarkup says:</div>
+                @Html.Markdown(postComment.Body, true)
+                <table style="width: 100%;" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td>
+                            <div class="subInfo" style="font-size: 11px;">@postComment.PostedDate.TimePassed()</div>
+                        </td>
+                        <td style="text-align: right;">
+                            @if (User.Identity.IsAuthenticated && User.Identity.Name.ToLower() == postComment.BlogPost.Author.ToLower())
+                            {
+                                <div>
+                                    @Html.ActionLink("delete", "DeleteComment", new { Id = postComment.CommentID }, new { @class = "deleteComment" })
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    }
+</div>

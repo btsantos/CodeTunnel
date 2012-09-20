@@ -1,0 +1,398 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="BlogPosts" EntityType="Model.Store.BlogPosts" store:Type="Tables" Schema="CodeTunnel" />
+          <EntitySet Name="PostComments" EntityType="Model.Store.PostComments" store:Type="Tables" Schema="CodeTunnel" />
+          <EntitySet Name="ProjectLinks" EntityType="Model.Store.ProjectLinks" store:Type="Tables" Schema="CodeTunnel" />
+          <EntitySet Name="Projects" EntityType="Model.Store.Projects" store:Type="Tables" Schema="CodeTunnel" />
+          <EntitySet Name="Users" EntityType="Model.Store.Users" store:Type="Tables" Schema="CodeTunnel" />
+          <EntitySet Name="Variables" EntityType="Model.Store.Variables" store:Type="Tables" Schema="CodeTunnel" />
+          <AssociationSet Name="FK_Post_has_many_comments" Association="Model.Store.FK_Post_has_many_comments">
+            <End Role="BlogPosts" EntitySet="BlogPosts" />
+            <End Role="PostComments" EntitySet="PostComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Project_has_many_links" Association="Model.Store.FK_Project_has_many_links">
+            <End Role="Projects" EntitySet="Projects" />
+            <End Role="ProjectLinks" EntitySet="ProjectLinks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_has_many_blog_posts" Association="Model.Store.FK_User_has_many_blog_posts">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="BlogPosts" EntitySet="BlogPosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_has_many_projects" Association="Model.Store.FK_User_has_many_projects">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Projects" EntitySet="Projects" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="BlogPosts">
+          <Key>
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="PostID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Author" Type="nvarchar" Nullable="false" MaxLength="15" />
+          <Property Name="PostedDate" Type="datetime" />
+          <Property Name="EditedDate" Type="datetime" />
+          <Property Name="Title" Type="nvarchar" Nullable="false" MaxLength="300" />
+          <Property Name="Body" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Draft" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PostComments">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Name="CommentID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PostID" Type="int" Nullable="false" />
+          <Property Name="Author" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="PostedDate" Type="datetime" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="500" />
+          <Property Name="Website" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Body" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IPAddress" Type="nvarchar" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="ProjectLinks">
+          <Key>
+            <PropertyRef Name="LinkID" />
+          </Key>
+          <Property Name="LinkID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectID" Type="int" Nullable="false" />
+          <Property Name="URL" Type="nvarchar" Nullable="false" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="Projects">
+          <Key>
+            <PropertyRef Name="ProjectID" />
+          </Key>
+          <Property Name="ProjectID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Author" Type="nvarchar" Nullable="false" MaxLength="15" />
+          <Property Name="PostedDate" Type="datetime" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Type="nvarchar" Nullable="false" MaxLength="15" />
+          <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Administrator" Type="bit" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="Website" Type="nvarchar" MaxLength="300" />
+        </EntityType>
+        <EntityType Name="Variables">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Value" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_Post_has_many_comments">
+          <End Role="BlogPosts" Type="Model.Store.BlogPosts" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PostComments" Type="Model.Store.PostComments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BlogPosts">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="PostComments">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Project_has_many_links">
+          <End Role="Projects" Type="Model.Store.Projects" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ProjectLinks" Type="Model.Store.ProjectLinks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projects">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="ProjectLinks">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_has_many_blog_posts">
+          <End Role="Users" Type="Model.Store.Users" Multiplicity="1" />
+          <End Role="BlogPosts" Type="Model.Store.BlogPosts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="BlogPosts">
+              <PropertyRef Name="Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_has_many_projects">
+          <End Role="Users" Type="Model.Store.Users" Multiplicity="1" />
+          <End Role="Projects" Type="Model.Store.Projects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Projects">
+              <PropertyRef Name="Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Entities" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="CTContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ProjectLinks" EntityType="Entities.ProjectLink" />
+          <EntitySet Name="Projects" EntityType="Entities.Project" />
+          <EntitySet Name="Users" EntityType="Entities.User" />
+          <AssociationSet Name="FK_Project_has_many_links" Association="Entities.FK_Project_has_many_links">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="ProjectLink" EntitySet="ProjectLinks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_has_many_projects" Association="Entities.FK_User_has_many_projects">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+          <EntitySet Name="PostComments" EntityType="Entities.PostComment" />
+          <EntitySet Name="Variables" EntityType="Entities.Variable" />
+          <EntitySet Name="BlogPosts" EntityType="Entities.BlogPost" />
+          <AssociationSet Name="FK_Post_has_many_comments" Association="Entities.FK_Post_has_many_comments">
+            <End Role="BlogPost" EntitySet="BlogPosts" />
+            <End Role="PostComment" EntitySet="PostComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_has_many_blog_posts" Association="Entities.FK_User_has_many_blog_posts">
+            <End Role="User" EntitySet="Users" />
+            <End Role="BlogPost" EntitySet="BlogPosts" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ProjectLink">
+          <Key>
+            <PropertyRef Name="LinkID" />
+          </Key>
+          <Property Name="LinkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectID" Type="Int32" Nullable="false" />
+          <Property Name="URL" Type="String" Nullable="false" MaxLength="1000" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Project" Relationship="Entities.FK_Project_has_many_links" FromRole="ProjectLink" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="ProjectID" />
+          </Key>
+          <Property Name="ProjectID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Author" Type="String" Nullable="false" MaxLength="15" Unicode="true" FixedLength="false" />
+          <Property Name="PostedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="ProjectLinks" Relationship="Entities.FK_Project_has_many_links" FromRole="Project" ToRole="ProjectLink" />
+          <NavigationProperty Name="User" Relationship="Entities.FK_User_has_many_projects" FromRole="Project" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Type="String" Name="Username" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Projects" Relationship="Entities.FK_User_has_many_projects" FromRole="User" ToRole="Project" />
+          <Property Type="Boolean" Name="Administrator" Nullable="false" />
+          <Property Type="String" Name="Email" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Website" MaxLength="300" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BlogPosts" Relationship="Entities.FK_User_has_many_blog_posts" FromRole="User" ToRole="BlogPost" />
+        </EntityType>
+        <Association Name="FK_Project_has_many_links">
+          <End Type="Entities.Project" Role="Project" Multiplicity="1" />
+          <End Type="Entities.ProjectLink" Role="ProjectLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="ProjectLink">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_has_many_projects">
+          <End Type="Entities.User" Role="User" Multiplicity="1" />
+          <End Type="Entities.Project" Role="Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="PostComment">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Type="Int32" Name="CommentID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="PostID" Nullable="false" />
+          <Property Type="String" Name="Author" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Type="DateTime" Name="PostedDate" Nullable="false" Precision="3" />
+          <Property Type="String" Name="Website" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Body" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Type="String" Name="Email" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="IPAddress" MaxLength="25" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BlogPost" Relationship="Entities.FK_Post_has_many_comments" FromRole="PostComment" ToRole="BlogPost" />
+        </EntityType>
+        <EntityType Name="Variable">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Value" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="BlogPost">
+          <Key>
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Type="Int32" Name="PostID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Author" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="PostedDate" Precision="3" Nullable="false" />
+          <Property Type="DateTime" Name="EditedDate" Precision="3" Nullable="true" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Body" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="Draft" Nullable="false" />
+          <NavigationProperty Name="PostComments" Relationship="Entities.FK_Post_has_many_comments" FromRole="BlogPost" ToRole="PostComment" />
+          <NavigationProperty Name="User" Relationship="Entities.FK_User_has_many_blog_posts" FromRole="BlogPost" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Post_has_many_comments">
+          <End Type="Entities.BlogPost" Role="BlogPost" Multiplicity="1" />
+          <End Type="Entities.PostComment" Role="PostComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BlogPost">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="PostComment">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_has_many_blog_posts">
+          <End Type="Entities.User" Role="User" Multiplicity="1" />
+          <End Type="Entities.BlogPost" Role="BlogPost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="BlogPost">
+              <PropertyRef Name="Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="CTContext">
+          <EntitySetMapping Name="ProjectLinks"><EntityTypeMapping TypeName="Entities.ProjectLink"><MappingFragment StoreEntitySet="ProjectLinks">
+            <ScalarProperty Name="LinkID" ColumnName="LinkID" />
+            <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+            <ScalarProperty Name="URL" ColumnName="URL" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Projects"><EntityTypeMapping TypeName="Entities.Project"><MappingFragment StoreEntitySet="Projects">
+            <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+            <ScalarProperty Name="Author" ColumnName="Author" />
+            <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="Entities.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Administrator" ColumnName="Administrator" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PostComments">
+            <EntityTypeMapping TypeName="Entities.PostComment">
+              <MappingFragment StoreEntitySet="PostComments">
+                <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Variables">
+            <EntityTypeMapping TypeName="Entities.Variable">
+              <MappingFragment StoreEntitySet="Variables">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BlogPosts">
+            <EntityTypeMapping TypeName="Entities.BlogPost">
+              <MappingFragment StoreEntitySet="BlogPosts">
+                <ScalarProperty Name="Draft" ColumnName="Draft" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="EditedDate" ColumnName="EditedDate" />
+                <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="CTContext" ZoomLevel="86">
+        <EntityTypeShape EntityType="Entities.ProjectLink" Width="1.5" PointX="4.625" PointY="4.125" Height="1.7879850260416665" IsExpanded="true" />
+        <EntityTypeShape EntityType="Entities.Project" Width="1.5" PointX="2.625" PointY="4.125" Height="2.3648893229166656" IsExpanded="true" />
+        <EntityTypeShape EntityType="Entities.User" Width="1.5" PointX="0.5" PointY="2.5" Height="1.9802864583333317" />
+        <AssociationConnector Association="Entities.FK_Project_has_many_links" >
+          <ConnectorPoint PointX="4.125" PointY="5.0189925130208337" />
+          <ConnectorPoint PointX="4.625" PointY="5.0189925130208337" />
+        </AssociationConnector>
+        <AssociationConnector Association="Entities.FK_User_has_many_projects" >
+          <ConnectorPoint PointX="2" PointY="4.4949446614583328" />
+          <ConnectorPoint PointX="2.625" PointY="4.4949446614583328" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="Entities.PostComment" Width="1.5" PointX="4.625" PointY="0.5" Height="2.7494921874999996" />
+        <EntityTypeShape EntityType="Entities.Variable" Width="1.5" PointX="0.5" PointY="0.5" Height="1.4033821614583317" />
+        <EntityTypeShape EntityType="Entities.BlogPost" Width="1.5" PointX="2.625" PointY="0.5" Height="2.7494921874999996" />
+        <AssociationConnector Association="Entities.FK_Post_has_many_comments" >
+          <ConnectorPoint PointX="4.125" PointY="1.8747460937499998" />
+          <ConnectorPoint PointX="4.625" PointY="1.8747460937499998" />
+        </AssociationConnector>
+        <AssociationConnector Association="Entities.FK_User_has_many_blog_posts" >
+          <ConnectorPoint PointX="2" PointY="2.87474609375" />
+          <ConnectorPoint PointX="2.625" PointY="2.87474609375" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

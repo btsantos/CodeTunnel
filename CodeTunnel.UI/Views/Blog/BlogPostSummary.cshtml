@@ -1,0 +1,23 @@
+﻿@model CodeTunnel.Domain.Entities.BlogPost
+<div class="blogSummary">
+    <div class="opacityFrame">
+    </div>
+    <div class="subFrame">
+        @Html.ActionLink(Model.Title, "post", new { Id = Model.PostID, postTitle = CommonUtils.CreateFriendlyUrl(Model.Title) }, new { @class = "titleLink" })
+        <div class="subInfo">
+            Posted by @Model.Author on @Model.PostedDate.ToString("D") | @Model.PostComments.Count
+            Comment(s)
+        </div>
+        @if (User.Identity.IsAuthenticated && User.Identity.Name.ToLower() == Model.Author.ToLower())
+        {
+            <div style="font-size: 11px;">
+                @Html.ActionLink("edit", "EditPost", new { Id = Model.PostID }, new { @class = "editLink" })|@Html.ActionLink("delete", "DeletePost", new { Id = Model.PostID }, new { @class = "deleteLink" })
+            </div>
+        }
+        <br />
+        <div class="summaryText">
+            @(Model.Body.TruncateOnSpace(500))
+            @Html.ActionLink("(view more)", "post", new { Id = Model.PostID })
+        </div>
+    </div>
+</div>

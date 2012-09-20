@@ -1,0 +1,18 @@
+﻿@model IEnumerable<string>
+@{
+    ViewBag.Title = "Upload Files";
+}
+<h2>Upload Files</h2>
+<br />
+@using (Html.BeginForm("Upload", "Downloads", FormMethod.Post, new { enctype = "multipart/form-data", @class = "file_uploader" }))
+{
+    <text>
+        Directory: @Html.DropDownList("Directory", new SelectList(Model.Select(x => new { Value = x, Text = x }), "Value", "Text"))
+        <br />
+        <br />
+        <input type="file" name="file" multiple/>
+        <br />
+        <br />
+        <input type="submit" value="Upload" />
+    </text>
+}

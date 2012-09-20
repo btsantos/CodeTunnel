@@ -1,0 +1,18 @@
+﻿@model IEnumerable<CodeTunnel.UI.Models.Repository>
+
+@{
+    ViewBag.Title = "Projects";
+}
+
+<h1>My Projects</h1>
+@foreach (var repository in Model.Where(x => !x.IsFork))
+{
+    Html.RenderPartial("Project", repository);
+}
+<br />
+<br />
+<h1>Forked Projects</h1>
+@foreach (var repository in Model.Where(x => x.IsFork))
+{
+    Html.RenderPartial("Project", repository);
+}

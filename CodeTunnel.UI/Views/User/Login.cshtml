@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+<div style="text-align: center;">
+    <div class="form" style="display: inline-block;">
+        <div class="opacityFrame">
+        </div>
+        <div class="subFrame">
+            @using (Html.BeginForm())
+            {
+                <div>
+                    Username:<br />
+                    @Html.TextBox("username", null, new { style = "width: 250px;" })
+                    <br />
+                    Password:<br />
+                    @Html.Password("password", null, new { style = "width: 250px;" })
+                    <br />
+                    @Html.CheckBox("remember", false) Remember me
+                    @if (ViewBag.Invalid)
+                    {
+                        <div class="validation-summary-errors">
+                            Invalid username or password.
+                        </div>
+                    }
+                    <div style="text-align: right; margin-top: 5px;">
+                        <input type="submit" value="Login" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

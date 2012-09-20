@@ -1,0 +1,42 @@
+﻿@model CodeTunnel.UI.Models.BlogIndexViewModel
+@using CodeTunnel.Domain.Entities;
+@{
+    ViewBag.Title = "Blog Index";
+}
+<script type="text/javascript">
+    var monitorHash = true;
+</script>
+<table style="width: 100%;" cellspacing="0" cellpadding="0">
+    <tr>
+        <td style="vertical-align: bottom;">
+            @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x }))
+        </td>
+        <td style="text-align: right;">
+            @using (Html.BeginForm("Search", "Blog", FormMethod.Get))
+            {
+                <text>
+                @Html.Hidden("page", 1)
+                @Html.TextBox("query", null, new { style = "padding: 3px;" })
+                <input type="submit" value="Search" />
+                </text>
+            }
+        </td>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <td style="text-align: right;">
+                @Html.ActionLink("New Post", "NewPost", null, new { @class = "button", id = "newPost" })
+            </td>
+        }
+    </tr>
+</table>
+<div class="blogIndex">
+    @foreach (BlogPost blogPost in Model.BlogPosts)
+    {
+        Html.RenderPartial("BlogPostSummary", blogPost);
+    }
+    @if (Model.BlogPosts.Count() == 0)
+    {
+        <text>There are no blog posts.</text>
+    }
+</div>
+@Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x }))

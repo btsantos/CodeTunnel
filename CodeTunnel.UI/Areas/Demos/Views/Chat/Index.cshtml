@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "SignalR Chat Application";
+}
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.signalR.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/signalr/hubs")"></script>
+<style type="text/css">
+    #chatDisplay
+    {
+        width: 900px;
+        background-color: #CCEECC;
+        height: 200px;
+        color: #000;
+        border-radius: 10px;
+        padding: 5px;
+        overflow: auto;
+    }
+    #message
+    {
+        width: 500px;
+    }
+</style>
+
+@if (ViewBag.Nickname == null)
+{
+    using (Html.BeginForm())
+    {
+        <div>
+            <h2>Welcome to the Code Tunnel SignalR Chat example!</h2>
+            <br />
+            Please enter a nickname to be used in the chat.<br />
+            @Html.TextBox("nickname", "Anonymous", new { style = "width: 250px;" }) <input type="submit" id="submit" value="Submit" />
+        </div>
+    }
+}
+else
+{
+    <script type="text/javascript">
+        $(function ()
+        {
+            var chatHub = $.connection.chatHub;
+            chatHub.addMessage = function (message)
+            {
+                $('#chatDisplay').append(message).scrollTo('100%', 0, { axis: 'y' });
+            };
+            chatHub.nickname = '@ViewBag.Nickname';
+            $('#chatForm').submit(function (e)
+            {
+                e.preventDefault();
+                chatHub.send($('#message').val());
+                $('#message').val('');
+            });
+            $.connection.hub.start(function ()
+            {
+                chatHub.enter();
+            });
+        });
+    </script>
+    
+    using (Html.BeginForm("Index", "Chat", FormMethod.Post, new { id = "chatForm" }))
+    {
+        <div>
+            <div id="chatDisplay">
+            </div>
+            <br />
+            @ViewBag.Nickname: @Html.TextBox("message") <input type="submit" id="send" value="Send" />
+        </div>
+    }
+}

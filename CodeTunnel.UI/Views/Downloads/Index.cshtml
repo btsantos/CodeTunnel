@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<table style="width: 100%;" cellspacing="0" cellpadding="0">
+    <tr>
+        <td style="vertical-align: bottom;">
+            @*@Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x }))*@
+        </td>
+        @*if (User.Identity.IsAuthenticated)
+        {
+            <td style="text-align: right;">
+                @Html.ActionLink("Upload", "Upload", null, new { @class = "button", id = "upload" })
+            </td>
+        }*@
+    </tr>
+</table>
+<h2>Downloads section is not yet complete. Please check back soon.</h2>
+

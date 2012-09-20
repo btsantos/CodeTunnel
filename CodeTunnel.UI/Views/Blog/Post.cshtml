@@ -1,0 +1,119 @@
+﻿@model CodeTunnel.UI.Models.BlogPostViewModel
+@using CodeTunnel.Domain.Entities;
+@{
+    ViewBag.Title = Model.BlogPost.Title;
+}
+<script type="text/javascript">
+    $(function ()
+    {
+        $('#addComment').hide();
+        $('<input id="showAddComment" type="button" value="Add Comment" />').insertBefore('#addComment');
+        $('#showAddComment').click(function ()
+        {
+            $(this).hide();
+            $('#addComment').slideDown('fast', function ()
+            {
+                $(window).scrollTo('#addComment', { duration: 1000 });
+            });
+            return false;
+        });
+        $('#addComment').live('submit', function (e)
+        {
+            if ($('#addComment').valid())
+            {
+                $('#ajax-loader').slideDown('fast');
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: "POST",
+                    data: $(this).serialize(),
+                    success: function (response)
+                    {
+                        if (response.Valid)
+                        {
+                            $('#addComment').slideUp('fast');
+                            $('#showAddComment').fadeIn();
+                            $('.comments').replaceWith(response.Html);
+                            $('#addComment textarea').val('');
+                            $('.validation-summary-errors').html('');
+                            Prettify();
+                        }
+                        else
+                        {
+                            $('#addComment').replaceWith(response.Html);
+                            ActivateWmd();
+                        }
+                    },
+                    error: function (error)
+                    {
+                        alert(error.statusText);
+                    },
+                    complete: function ()
+                    {
+                        $('#ajax-loader').slideUp('fast');
+                    }
+                });
+            }
+            $(window).scrollTo('#addComment', { duration: 3000 });
+            return false;
+        });
+
+        $('.deleteComment').live('click', function (e)
+        {
+            var deleteLink = this;
+            if (confirm('Are you sure?'))
+            {
+                $(deleteLink).closest('.comment').fadeOut('normal', function ()
+                {
+                    $(this).remove();
+                });
+                $('#commentCount').text($('#commentCount').text() - 1);
+                $.ajax({
+                    url: $(this).attr('href'),
+                    type: "GET",
+                    error: function (error)
+                    {
+                        alert(error.statusText);
+                    }
+                });
+            }
+            return false;
+        });
+    });
+</script>
+@Html.ValidationSummary("There were errors adding your comment.")
+<br />
+<div class="blogPost">
+    <div class="opacityFrame">
+    </div>
+    <div class="subFrame">
+        <div class="floatingOptions" style="padding-right:15px;">
+            <div class="opacityFrame"></div>
+            <div class="subFrame">
+                <div style="font-size:13px; font-family:Arial; margin-bottom: 5px;">Sharing Options</div>
+                <!-- Place this tag where you want the +1 button to render -->
+                <g:plusone size="tall"></g:plusone>
+                <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical" data-lang="en">Tweet</a>
+                <div class="fb-like" data-send="false" data-layout="box_count" data-show-faces="false"></div>
+            </div>
+        </div>
+        <div class="postTitle">@Model.BlogPost.Title</div>
+        <div class="subInfo">
+            Posted by @Model.BlogPost.Author on @Model.BlogPost.PostedDate.ToString("D")
+        </div>
+        @if (User.Identity.IsAuthenticated && User.Identity.Name.ToLower() == Model.BlogPost.Author.ToLower())
+        {
+            <div style="font-size: 11px;">
+                @Html.ActionLink("edit", "EditPost", new { Id = Model.BlogPost.PostID }, new { @class = "editLink" })|@Html.ActionLink("delete", "DeletePost", new { Id = Model.BlogPost.PostID }, new { @class = "deleteLink" })
+            </div>
+        }
+        <div class="postBody">
+            @Html.Markdown(Model.BlogPost.Body, false)
+        </div>
+    </div>
+</div>
+<br />
+<br />
+@{
+    Html.RenderPartial("PostComments", Model.BlogPost.PostComments);
+    Html.RenderPartial("NewComment", Model.NewComment);
+}

@@ -1,0 +1,326 @@
+﻿@{
+    ViewBag.Title = "Markdown";
+}
+<div class="form" style="display: block;">
+    <div class="opacityFrame">
+    </div>
+    <div class="subFrame">
+        @Html.Markdown(@"
+## Code and Preformatted Text ##
+Indent four spaces to create an escaped &lt;pre&gt;&lt;code&gt; block:
+
+    // My first program!
+    Console.WriteLine(""Hello World"");
+
+The text will be wrapped in tags, and displayed in a monospaced font.
+The first four spaces will be stripped off, but all other whitespace will be preserved.
+
+Markdown and HTML is ignored within a code block:
+
+    <div>
+        Hello HTML World!
+    </div>
+
+## Code Spans ##
+
+Use backticks to create an inline &lt;code&gt; span, example:
+
+    ""You need to end `Console.WriteLine(""Hello World"")` with a semi-colon (`;`).""
+
+Would produce:
+
+""You need to end `Console.WriteLine(""Hello World"")` with a semi-colon (`;`).""
+
+(The backtick key is in the upper left corner of most keyboards.)
+
+Like code blocks, code spans will be displayed in a monospaced font. Markdown and HTML will not work within them.
+
+## Linebreaks ##
+
+End a line with two spaces to add a <br/> linebreak.
+
+## Bold and Italics ##
+
+    *This is italicized*, and so is _this_.
+    **This is bold**, and so is __this__.
+    Use ***italics and bold together*** if you ___have to___.
+
+## Basic Links ##
+
+There are three ways to write links. Each is easier to read than the last:
+
+    Here's an inline link to [Google](http://www.google.com/).
+    Here's a reference-style link to [Google][1].
+    Here's a very readable link to [Yahoo!][yahoo].
+
+        [1]: http://www.google.com/
+        [yahoo]: http://www.yahoo.com/
+
+The link definitions can appear anywhere in the document -- before or after the place where you use them.
+The link definition names can be any unique string, and are case-insensitive.
+
+## Advanced Links ##
+
+Links can have a title attribute, which will show up on hover; they are helpful if the link itself is not descriptive
+enough to tell users where they're going.
+
+    Here's a [poorly-named link](http://www.google.com/ ""Google"").
+    Never write ""[click here][^2]"".
+    Visit [us][web].
+
+        [^2] http://www.w3.org/QA/Tips/noClickHere
+             (Advice against the phrase ""click here"")
+        [web]: http://www.CodeTunnel.com/ ""Code Tunnel""
+
+You can also use standard HTML hyperlink syntax.
+
+    <a href=""http://example.com"" title=""example"">example</a>
+
+## Bare URLs ##
+
+Stack Overflow modified this Markdown parser to support ""naked"" URLs (in most but not all cases --
+beware of unusual characters in your URLs); they will be converted into links automatically.
+
+    I often visit http://example.com.
+
+Force URLs by enclosing them in angle bradckets:
+
+    Have you seen <http://example.com>?
+
+All URLs must be fully-qualified path names. It does not support relative paths.
+
+## Headers ##
+
+Underline text to make the two &lt;h1&gt; &lt;h2&gt; top-level headers:
+
+    Header 1
+    ========
+
+    Header 2
+    --------
+
+The number of = or - signs doesn't matter; one will work. But using enough to underline the text makes your titles look
+better in plain text.
+
+Use hash marks for several levels of headers:
+
+    # Header 1 #
+    ## Header 2 ##
+    ### Header 3 ###
+
+The closing # characters are optional.
+
+## Horizontal Rules ##
+
+Insert a horizontal rule &lt;hr/&gt; by putting three or more hyphens, asterisks, or underscores on a line by themselves:
+
+    Rule #1
+
+    ---
+
+    Rule #2
+
+    ******
+
+    Rule #3
+
+    ___
+
+Using spaces between the characters also works:
+
+    Rule #4
+
+    - - - -
+
+## Simple Lists ##
+
+A bulleted &lt;ul&gt; list:
+
+    - Use a minus sign for a bullet
+    + Or a plus sign
+    * Or an asterisk
+
+A numbered &lt;ol&gt; list:
+
+    1. Numbered lists are easy
+    2. Markdown keeps track of the numbers for you
+    7. So this would be 3 instead of 7.
+
+A double-spaced list:
+
+    - This list gets wrapped in &lt;p&gt; tags
+
+    - So there will be extra space between items
+
+## Advanced Lists: Nesting ##
+
+    1.  Lists in a list item:
+        - Indented four spaces.
+            * indented eight spaces.
+        - Four spaces again.
+    2.  Multiple paragraphs in a list item:
+        It's best to indent the paragraphs four spaces
+        You can get away with three, but it can get confusing when you nest other things.
+        Stick to four.
+
+        We indented the first line an extra space to align it with these paragraphs.
+        In real use, we might do that to the entire list so that all items line up.
+
+    3. Blockquotes in a list item:
+
+    > Skip a line and
+        > indent the >'s four spaces.
+
+    4. Preformatted text in a list item:
+
+            Skip a line and indent eight spaces.
+            That's four spaces for the list
+            and four to trigger the code block.
+
+## Simple Blockquotes ##
+
+Add a &gt; to the beginning of any line to create a &lt;blockquote&gt;.
+
+    > The syntax is based on the way email programs
+    > usually do quotations. You don't need to hard-wrap
+    > the paragraphs in your blockquotes, but it looks much nicer
+    > if you do.
+
+## Advanced Blockquotes: Nesting ##
+
+To put other Markdown blocks in a &lt;blockquote7gt;, just add a &gt; followed by a space:
+
+    > The > on the blank lines is optional.
+    > Include it or don't; Markdown doesn't care.
+    >
+    > But your plain text looks better to humans
+    > if you include the extra `>` between paragraphs.
+
+Blockquotes within a blockquote:
+
+    > A standard blockquote is indented
+    > > A nested blockquote is indented more
+    > > > > You can nest to any depth.
+
+Lists in a blockquote:
+
+    > - A list in a blockquote
+    > - With a > and space in front of it
+    >    * A sublist
+
+Preformatted text in a blockquote:
+
+    >     Indent five spaces total. The first
+    >     one is part of the blockquote designator.
+
+## Images ##
+
+Images are exactly like links, but they have an exclamation point in front of them:
+
+    ![Valid XHTML](http://w3.org/Icons/valid-xhtml10)
+
+Would produce:
+
+![Valid XHTML](http://w3.org/Icons/valid-xhtml10)
+
+The word in square brackets is the alt text, which gets displayed if the browser can't show the image.
+Be sure to include meaningful alt text for screen-reading software.
+
+Just like links, images work with reference syntax and titles:
+
+    This page is ![Valid XHTML][checkmark].
+
+    [checkmark]: http://w3.org/Icons/valid-xhtml10
+                 ""What are you smiling at?""
+
+Note: Markdown does not currently support the shortest reference syntax for images:
+
+    Here's a broken ![checkmark].
+
+But you can use a slightly more verbose version of implicit reference names:
+
+    This ![checkmark][] works.
+
+The reference name is also used as the alt text.
+
+You can also use standard HTML image syntax, which allows you to scale the width and height of the image.
+
+    <img src=""http://example.com/sample.png"" width=""100"" height=""100"" />
+
+All URLs must be fully-qualified path names. We do not support relative paths.
+
+## Inline HTML ##
+
+If you need to do something that Markdown can't handle, use HTML. Not that just like Stack Overflow,
+Code Tunnel only supports a very strict subset of HTML. See below for more details.
+
+    Strikethrough humor is <strike>funny</strike>.
+
+Markdown is smart enough not to mangle your span-level HTML:
+
+    <u>markdown works *fine* in here.</u>
+
+Block-level HTML elements have a few restrictions:
+
+1. They must be separated from surrounding text by blank lines.
+2. The begin and end tags of the outermost block element must not be indented.
+3. Markdown can't be used within HTML blocks.
+
+    <pre>
+        You can <em>not</em> use Markdown in here :(
+    </pre>
+
+## Need More Detail on Markdown? ##
+
+Visit the [official Markdown syntax reference page](http://daringfireball.net/projects/markdown/syntax).
+
+## What HTML tags are allowed on Code Tunnel ##
+
+We do not allow *all* HTML tags, as that would be an [XSS](http://en.wikipedia.org/wiki/Cross-site_scripting) paradise. To that end, the Code Tunnel engine allows only the following **safe, whitelisted subset of HTML tags**:
+
+    <a>
+    <b>
+    <blockquote>
+    <code>
+    <del>
+    <dd>
+    <dl>
+    <dt>
+    <em>
+    <h1>, <h2>, <h3>
+    <i>
+    <img>
+    <kbd>
+    <li>
+    <ol>
+    <p>
+    <pre>
+    <s>
+    <sup>
+    <sub>
+    <strong>
+    <strike>
+    <ul>
+    <br/>
+    <hr/>
+
+The following attributes are allowed on the `<img>` tag:
+
+    src="" ""
+    width="" "" (up to 999)
+    height="" "" (up to 999)
+    alt="" ""
+    title="" ""
+
+The following attributes are allowed on the `<a>` tag:
+
+    href="" ""
+    title="" ""
+
+HTML tags not on this list are stripped from the output. They may render in the client preview but they will always be removed on the server.**You must enter the tags *exactly as shown*. Any deviation from this list (adding extra spaces, using single quote or no quotes, etc) means the tag will be stripped.**
+
+We do not and will not allow table tags -- sorry. This is intentional and by design. If you need a quick and dirty ""table"", use `<pre>` and ASCII layout.
+
+However, I am open to suggestions. Are there some other (safe!) tag you think we should allow?", false)
+    </div>
+</div>

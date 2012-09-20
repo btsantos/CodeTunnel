@@ -1,0 +1,23 @@
+﻿@model CodeTunnel.UI.Models.SearchViewModel
+@using CodeTunnel.Domain.Entities;
+@{
+    ViewBag.Title = "Search Results";
+}
+<table style="width: 100%;" cellspacing="0" cellpadding="0">
+    <tr>
+        <td style="vertical-align: bottom;">
+            @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x }))
+        </td>
+    </tr>
+</table>
+<div class="blogIndex">
+    @foreach (BlogPost blogPost in Model.BlogPosts)
+    {
+        Html.RenderPartial("SearchBlogPostSummary", blogPost);
+    }
+    @if (Model.BlogPosts.Count() == 0)
+    {
+        <text>There are no search results.</text>
+    }
+</div>
+@Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x }))
