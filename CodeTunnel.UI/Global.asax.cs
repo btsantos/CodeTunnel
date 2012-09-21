@@ -35,20 +35,8 @@ namespace CodeTunnel.UI
 
             routes.MapRoute(
                 null,
-                "Content/{containerName}/{blobName}",
+                "Content/{*path}",
                 new { controller = "Content", action = "Index" }
-            );
-
-            routes.MapRoute(
-                null,
-                "Content/{blobName}",
-                new { controller = "Content", action = "Index" }
-            );
-
-            routes.MapRoute(
-                null,
-                "SetupStorage",
-                new { controller = "Content", action = "SetupStorage" }
             );
 
             routes.MapRoute(
