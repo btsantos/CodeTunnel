@@ -17,19 +17,20 @@ namespace CodeTunnel.UI.Controllers
             var containerName = "miscellaneous";
             var blobName = path;
 
-            if (path.Contains('\\'))
+            if (path.Contains('/'))
             {
                 blobName = Path.GetFileName(path);
                 containerName = Path.GetDirectoryName(path)
                     .Replace('\\', '-')
+                    .Replace('/', '-')
                     .Replace("&", "and")
                     .Replace(' ', '-').Replace('_', '-');
             }
 
             var storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
             var blobClient = storageAccount.CreateCloudBlobClient();
-            var container = blobClient.GetContainerReference(containerName);
-            var blob = container.GetBlobReference(blobName);
+            var container = blobClient.GetContainerReference(containerName.ToLower());
+            var blob = container.GetBlobReference(blobName.ToLower());
 
             if (blob.Exists())
             {
