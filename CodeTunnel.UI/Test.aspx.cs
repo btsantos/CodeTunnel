@@ -12,6 +12,10 @@ namespace CodeTunnel.UI
         protected void Page_Load(object sender, EventArgs e)
         {
             Title = Session.SessionID;
+            result.InnerHtml = Session["oldDate"].ToString();
+            var newDate = DateTime.Now;
+            result.InnerHtml += "<br />" + newDate.ToString();
+            Session["oldDate"] = newDate;
         }
     }
 }
